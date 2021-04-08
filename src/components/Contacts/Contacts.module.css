@@ -1,16 +1,21 @@
 .contactsContainer {
-  background: white;
+  background: #525252;
 }
+
+/* .nav-link.active {
+  color: red !important;
+  background-color: yellow !important;
+} */
 
 .contactCard {
   text-align: start;
   font-size: 1.5em;
   /* height: 10em; */
-  border-bottom: 1px solid rgb(186, 186, 186);
+  /* border-bottom: 1px solid rgb(186, 186, 186); */
   margin: 1em;
   padding-top: 0.5em;
   /* display: flex; */
-  background-color: #dadada;
+  background-color: white;
   border-radius: 0.3em;
 }
 
@@ -24,3 +29,16 @@
   justify-content: flex-start;
   padding-top: 0.4em;
 }
+
+/* .nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  color: orangered;
+  background-color: #fff;
+  border-color: none;
+} */
+/* .informationCol div nav a {
+  background: #525252;
+}
+.informationCol div nav a.nav-link.active {
+  background: black;
+} */

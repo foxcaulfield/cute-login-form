@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import * as axios from "axios";
 import styles from "./Contacts.module.css";
+import "./Contacts.module.css";
+
 import {
   Tabs,
   Tab,
@@ -21,7 +23,7 @@ function Contacts(props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios(
+      const { data } = await axios.get(
         "https://jsonplaceholder.typicode.com/users"
       );
       setUsers({ contacts: data.reverse() });
@@ -29,6 +31,11 @@ function Contacts(props) {
     };
     fetchData();
   }, [setUsers]);
+
+  // function addContact(){
+  //   const fetchData = async () => {
+  //     const { data }
+  // }
 
   return (
     <div className={styles.contactsContainer}>
@@ -109,12 +116,10 @@ function Contacts(props) {
                     rounded
                     fluid
                   />
-                  <strong>
-                    <em>{item.name}</em>
-                  </strong>
+                  <strong>{item.name}</strong>
                 </Col>
 
-                <Col fluid>
+                <Col className={styles.informationCol} fluid>
                   <div className={styles.contactTabs}>
                     <Tabs defaultActiveKey="Bio" id="contactTab">
                       <Tab
