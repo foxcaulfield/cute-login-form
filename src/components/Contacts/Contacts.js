@@ -17,35 +17,63 @@ import {
   Col,
   Image,
   Modal,
+  Accordion,
+  Card,
+  useAccordionToggle,
 } from "react-bootstrap";
 
-function MyVerticallyCenteredModal(props) {
+function CustomToggle({ children, eventKey }) {
+  const decoratedOnClick = useAccordionToggle(eventKey, () =>
+    console.log("totally custom!")
+  );
+
   return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
+    <Button
+      variant="info"
+      onClick={decoratedOnClick}
+      // handleItems(item);
     >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <h4>Centered Modal</h4>
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
-        </p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-      </Modal.Footer>
-    </Modal>
+      {children}
+    </Button>
+    // <button
+    //   type="button"
+    //   style={{ backgroundColor: "pink" }}
+    //   onClick={decoratedOnClick}
+    // >
+    //   {children}
+    // </button>
   );
 }
+
+// function MyVerticallyCenteredModal(props) {
+//   console.log("hey");
+//   console.log(props);
+//   return (
+//     <Modal
+//       {...props}
+//       size="lg"
+//       aria-labelledby="contained-modal-title-vcenter"
+//       centered
+//     >
+//       <Modal.Header closeButton>
+//         <Modal.Title id="contained-modal-title-vcenter">
+//           {/* {props.onProfileClick.items.item.name} */}
+//         </Modal.Title>
+//       </Modal.Header>
+//       <Modal.Body>
+//         <h4>Centered Modal{props.item.name}</h4>
+//         <p>
+//           Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+//           dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+//           consectetur ac, vestibulum at eros.
+//         </p>
+//       </Modal.Body>
+//       <Modal.Footer>
+//         <Button onClick={props.onHide}>Close</Button>
+//       </Modal.Footer>
+//     </Modal>
+//   );
+// }
 
 function Contacts(props) {
   //users GET
@@ -64,109 +92,144 @@ function Contacts(props) {
   //users GET
 
   //modal show
-  const [modalShow, setModalShow] = React.useState(false);
-  //modal show
+  // const [modalShow, setModalShow] = React.useState(false);
+  // //modal show
+
+  // const handleItems = (items) => {
+  //   return items;
+  // };
 
   return (
     <div className={styles.contactsContainer}>
       {/* modal */}
-      <MyVerticallyCenteredModal
+      {/* <MyVerticallyCenteredModal
         show={modalShow}
         onHide={() => setModalShow(false)}
-      />
+        // items={handleItems()}
+      /> */}
       {/* modal */}
       <Container>
-        <Navbar bg="dark" variant="dark" expand sticky="top">
-          <Navbar.Brand href="#home">Contacts</Navbar.Brand>
-          <Nav className="mr-auto">
-            <Nav.Link href="#home">Add contact</Nav.Link>
-          </Nav>
-          <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-info">Search</Button>
-          </Form>
-        </Navbar>
-        {false && (
-          <Form>
-            <Form.Row>
-              <Form.Group as={Col} controlId="formGridEmail">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-              </Form.Group>
+        <Accordion defaultActiveKey="0">
+          <Navbar bg="dark" variant="dark" expand sticky="top">
+            <Navbar.Brand href="#home">Contacts</Navbar.Brand>
+            <Nav className="mr-auto"></Nav>
+            {/* <CustomToggle eventKey="0">Add contact</CustomToggle> */}
+            <Form inline>
+              <FormControl
+                type="text"
+                placeholder="Search"
+                className="mr-sm-2"
+              />
+              <Button variant="outline-info">Search</Button>
+            </Form>
+          </Navbar>
 
-              <Form.Group as={Col} controlId="formGridPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
-              </Form.Group>
-            </Form.Row>
+          <Card>
+            {/* <Card.Header>
+              <CustomToggle eventKey="0">Click me!</CustomToggle>
+            </Card.Header> */}
+            {/* <Accordion.Toggle as={Navbar.Brand} eventKey="0">
+              Click me!
+            </Accordion.Toggle> */}
+            <CustomToggle eventKey="0">Add contact</CustomToggle>
+            <Accordion.Collapse eventKey="0">
+              <Card.Body>
+                Hello! I'm the body
+                <Form>
+                  <Form.Row>
+                    <Form.Group as={Col} controlId="formGridName">
+                      <Form.Label>Name</Form.Label>
+                      <Form.Control type="text" placeholder="Enter name" />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridEmail">
+                      <Form.Label>Email</Form.Label>
+                      <Form.Control type="email" placeholder="Enter email" />
+                    </Form.Group>
 
-            <Form.Group controlId="formGridAddress1">
-              <Form.Label>Address</Form.Label>
-              <Form.Control placeholder="1234 Main St" />
-            </Form.Group>
+                    <Form.Group as={Col} controlId="formGridPassword">
+                      <Form.Label>Password</Form.Label>
+                      <Form.Control type="password" placeholder="Password" />
+                    </Form.Group>
+                  </Form.Row>
 
-            <Form.Group controlId="formGridAddress2">
-              <Form.Label>Address 2</Form.Label>
-              <Form.Control placeholder="Apartment, studio, or floor" />
-            </Form.Group>
+                  <Form.Group controlId="formGridAddress1">
+                    <Form.Label>Address</Form.Label>
+                    <Form.Control placeholder="1234 Main St" />
+                  </Form.Group>
 
-            <Form.Row>
-              <Form.Group as={Col} controlId="formGridCity">
-                <Form.Label>City</Form.Label>
-                <Form.Control />
-              </Form.Group>
+                  <Form.Group controlId="formGridAddress2">
+                    <Form.Label>Address 2</Form.Label>
+                    <Form.Control placeholder="Apartment, studio, or floor" />
+                  </Form.Group>
 
-              <Form.Group as={Col} controlId="formGridState">
-                <Form.Label>State</Form.Label>
-                <Form.Control as="select" defaultValue="Choose...">
-                  <option>Choose...</option>
-                  <option>...</option>
-                </Form.Control>
-              </Form.Group>
+                  <Form.Row>
+                    <Form.Group as={Col} controlId="formGridCity">
+                      <Form.Label>City</Form.Label>
+                      <Form.Control />
+                    </Form.Group>
 
-              <Form.Group as={Col} controlId="formGridZip">
-                <Form.Label>Zip</Form.Label>
-                <Form.Control />
-              </Form.Group>
-            </Form.Row>
+                    <Form.Group as={Col} controlId="formGridState">
+                      <Form.Label>State</Form.Label>
+                      <Form.Control as="select" defaultValue="Choose...">
+                        <option>Choose...</option>
+                        <option>...</option>
+                      </Form.Control>
+                    </Form.Group>
 
-            <Form.Group id="formGridCheckbox">
-              <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
+                    <Form.Group as={Col} controlId="formGridZip">
+                      <Form.Label>Zip</Form.Label>
+                      <Form.Control />
+                    </Form.Group>
+                  </Form.Row>
 
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        )}
+                  <Form.Group id="formGridCheckbox">
+                    <Form.Check type="checkbox" label="Check me out" />
+                  </Form.Group>
+
+                  <Button variant="primary" type="submit">
+                    Submit
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
+        {/* {false && (
+          
+        )} */}
 
         {!users.contacts && <Spinner animation="border" />}
         {users.contacts &&
           users.contacts.map((item) => (
-            <div
-              key={item.id}
-              className={styles.contactCard}
-              onClick={() => setModalShow(true)}
-            >
-              <Row xs={1} sm={2} md={2} lg={4}>
-                <Col className={styles.avatarAndNameCol}>
-                  <Image
-                    className={styles.avatar}
-                    src={`https://picsum.photos/200?random=${item.id}`}
-                    alt={`user_avatar_${item.id}`}
-                    rounded
-                    fluid
-                  />
+            // <Row>
+            <>
+              {/* <MyVerticallyCenteredModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                item={item}
+              /> */}
+              <div key={item.id} className={styles.contactCard}>
+                <Accordion>
+                  <Row xs={1} sm={2} md={2} lg={4}>
+                    {/* <Row> */}
+                    <Col className={styles.avatarAndNameCol}>
+                      <Image
+                        className={styles.avatar}
+                        src={`https://picsum.photos/200?random=${item.id}`}
+                        alt={`user_avatar_${item.id}`}
+                        rounded
+                        fluid
+                      />
 
-                  <span className={styles.name}>{item.name}</span>
-                  {/* <div className={styles.name}> {item.name}</div> */}
-                </Col>
-                <Col className={styles.phoneCol}>
-                  <span className={styles.phone}> {item.phone} </span>
-                </Col>
-                <Col className={styles.informationCol} fluid>
-                  <span className={styles.email}> {item.email}</span>
-                  {/* <div className={styles.contactTabs}>
+                      <span className={styles.name}>{item.name}</span>
+                      {/* <div className={styles.name}> {item.name}</div> */}
+                    </Col>
+                    <Col className={styles.phoneCol}>
+                      <span className={styles.phone}> {item.phone} </span>
+                    </Col>
+                    <Col className={styles.informationCol} fluid>
+                      <span className={styles.email}> {item.email}</span>
+                      {/* <div className={styles.contactTabs}>
                     <Tabs defaultActiveKey="Bio" id="contactTab">
                       <Tab
                         eventKey="Bio"
@@ -217,14 +280,101 @@ function Contacts(props) {
                       </Tab>
                     </Tabs>
                   </div> */}
-                </Col>
-                <Col className={styles.cityCol}>
-                  <span className={styles.city}>{item.address.city}</span>
-                  <Button variant="danger">Delete</Button>
-                </Col>
-                {/* <Col className={styles.cityCol}>{item.address.city}</Col> */}
-              </Row>
-            </div>
+                    </Col>
+                    <Col className={styles.cityCol}>
+                      <span className={styles.city}>{item.address.city}</span>
+                      {/* <Button variant="danger">Delete</Button> */}
+                      {/* <Button
+                        variant="info"
+                        onClick={() => console.log("totally custom!")}
+                        // handleItems(item);
+                      >
+                        Profile
+                      </Button> */}
+                      <CustomToggle eventKey="1">Profile</CustomToggle>
+                      {/* <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                        Click me!
+                      </Accordion.Toggle> */}
+                    </Col>
+                    {/* <Col className={styles.cityCol}>{item.address.city}</Col> */}
+                  </Row>
+                  {/* <Accordion> */}
+                  <Card>
+                    {/* <Card.Header>
+                      <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                        Click me!
+                      </Accordion.Toggle>
+                    </Card.Header> */}
+                    <Accordion.Collapse eventKey="1">
+                      <Card.Body>
+                        <Tabs defaultActiveKey="Bio" id="contactTab">
+                          <Tab
+                            eventKey="Bio"
+                            title="Bio"
+                            className={styles.contactTab}
+                          >
+                            <strong>Nickname:</strong> <em>{item.username}</em>
+                            <br />
+                            <strong>Email:</strong> <em>{item.email}</em>
+                          </Tab>
+                          <Tab
+                            eventKey="Address"
+                            title="Address"
+                            className={styles.contactTab}
+                          >
+                            <strong>Street:</strong>{" "}
+                            <em>{item.address.street}</em>
+                            <br />
+                            <strong>Suite:</strong>{" "}
+                            <em>{item.address.suite}</em>
+                            <br />
+                            <strong>City:</strong> <em>{item.address.city}</em>
+                            <br />
+                            <strong>Zipcode:</strong>{" "}
+                            <em>{item.address.zipcode}</em>
+                          </Tab>
+                          <Tab
+                            eventKey="Location"
+                            title="Location"
+                            className={styles.contactTab}
+                          >
+                            <strong>Latitude:</strong>{" "}
+                            <em>{item.address.geo.lat}</em>
+                            <br />
+                            <strong>Longitude:</strong>{" "}
+                            <em>{item.address.geo.lng}</em>
+                          </Tab>
+                          <Tab
+                            eventKey="Company"
+                            title="Company"
+                            className={styles.contactTab}
+                          >
+                            <strong>Company name</strong>:{" "}
+                            <em>{item.company.name}</em>
+                            <br />
+                            <strong> Catchphrase:</strong>
+                            <em>{item.company.catchPhrase}</em>
+                            <br />
+                            <strong>Business:</strong>{" "}
+                            <em>{item.company.bs}</em>
+                          </Tab>
+                        </Tabs>
+                      </Card.Body>
+                    </Accordion.Collapse>
+                  </Card>
+                  {/* <Card>
+                    <Card.Header>
+                      <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                        Click me!
+                      </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey="0">
+                      <Card.Body>Hello! I'm another body</Card.Body>
+                    </Accordion.Collapse>
+                  </Card> */}
+                </Accordion>
+              </div>
+            </>
           ))}
       </Container>
     </div>
