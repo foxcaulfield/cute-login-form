@@ -16,9 +16,39 @@ import {
   Row,
   Col,
   Image,
+  Modal,
 } from "react-bootstrap";
 
+function MyVerticallyCenteredModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Modal heading
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <h4>Centered Modal</h4>
+        <p>
+          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+          consectetur ac, vestibulum at eros.
+        </p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
 function Contacts(props) {
+  //users GET
   const [users, setUsers] = useState({ contacts: [] });
 
   useEffect(() => {
@@ -31,16 +61,22 @@ function Contacts(props) {
     };
     fetchData();
   }, [setUsers]);
+  //users GET
 
-  // function addContact(){
-  //   const fetchData = async () => {
-  //     const { data }
-  // }
+  //modal show
+  const [modalShow, setModalShow] = React.useState(false);
+  //modal show
 
   return (
     <div className={styles.contactsContainer}>
+      {/* modal */}
+      <MyVerticallyCenteredModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
+      {/* modal */}
       <Container>
-        <Navbar bg="dark" variant="dark">
+        <Navbar bg="dark" variant="dark" expand sticky="top">
           <Navbar.Brand href="#home">Contacts</Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="#home">Add contact</Nav.Link>
@@ -107,20 +143,30 @@ function Contacts(props) {
         {!users.contacts && <Spinner animation="border" />}
         {users.contacts &&
           users.contacts.map((item) => (
-            <div key={item.id} className={styles.contactCard}>
-              <Row>
-                <Col sm={3} className={styles.avatarAndNameCol}>
+            <div
+              key={item.id}
+              className={styles.contactCard}
+              onClick={() => setModalShow(true)}
+            >
+              <Row xs={1} sm={2} md={2} lg={4}>
+                <Col className={styles.avatarAndNameCol}>
                   <Image
+                    className={styles.avatar}
                     src={`https://picsum.photos/200?random=${item.id}`}
                     alt={`user_avatar_${item.id}`}
-                    // rounded
+                    rounded
                     fluid
                   />
-                  <strong>{item.name}</strong>
-                </Col>
 
+                  <span className={styles.name}>{item.name}</span>
+                  {/* <div className={styles.name}> {item.name}</div> */}
+                </Col>
+                <Col className={styles.phoneCol}>
+                  <span className={styles.phone}> {item.phone} </span>
+                </Col>
                 <Col className={styles.informationCol} fluid>
-                  <div className={styles.contactTabs}>
+                  <span className={styles.email}> {item.email}</span>
+                  {/* <div className={styles.contactTabs}>
                     <Tabs defaultActiveKey="Bio" id="contactTab">
                       <Tab
                         eventKey="Bio"
@@ -170,8 +216,13 @@ function Contacts(props) {
                         <strong>Business:</strong> <em>{item.company.bs}</em>
                       </Tab>
                     </Tabs>
-                  </div>
+                  </div> */}
                 </Col>
+                <Col className={styles.cityCol}>
+                  <span className={styles.city}>{item.address.city}</span>
+                  <Button variant="danger">Delete</Button>
+                </Col>
+                {/* <Col className={styles.cityCol}>{item.address.city}</Col> */}
               </Row>
             </div>
           ))}

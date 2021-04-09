@@ -2,43 +2,87 @@
   background: #525252;
 }
 
-/* .nav-link.active {
-  color: red !important;
-  background-color: yellow !important;
-} */
-
 .contactCard {
-  text-align: start;
-  font-size: 1.5em;
-  /* height: 10em; */
-  /* border-bottom: 1px solid rgb(186, 186, 186); */
-  margin: 1em;
-  padding-top: 0.5em;
-  /* display: flex; */
+  font-size: 1.1em;
+  margin: 0.8em;
+  padding: 0.5em;
   background-color: white;
   border-radius: 0.3em;
 }
 
+/* = cols = */
+/* 1st col */
 .avatarAndNameCol {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avatar {
+  height: 2em;
+  margin-right: 0.5em;
+}
+
+.name {
+  text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 2nd col */
+.phoneCol {
+  display: flex;
+  align-items: center;
+  text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.phone {
+  text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* 3rd col */
+.informationCol {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.email {
+  text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 4th col */
+.cityCol {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.city {
+  text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .contactTab {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-top: 0.4em;
 }
-
-/* .nav-tabs .nav-item.show .nav-link,
-.nav-tabs .nav-link.active {
-  color: orangered;
-  background-color: #fff;
-  border-color: none;
-} */
-/* .informationCol div nav a {
-  background: #525252;
-}
-.informationCol div nav a.nav-link.active {
-  background: black;
-} */
