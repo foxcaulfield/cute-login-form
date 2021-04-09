@@ -113,7 +113,7 @@ function Contacts(props) {
                   <Image
                     src={`https://picsum.photos/200?random=${item.id}`}
                     alt={`user_avatar_${item.id}`}
-                    rounded
+                    // rounded
                     fluid
                   />
                   <strong>{item.name}</strong>
