@@ -93,6 +93,31 @@ function Contacts(props) {
   // }
   //users POST
 
+  const validate = (values) => {
+    const errors = {};
+    if (!values.firstName) {
+      errors.firstName = "Required";
+    } else if (values.firstName.length > 15) {
+      errors.firstName = "Must be 15 characters or less";
+    }
+
+    if (!values.lastName) {
+      errors.lastName = "Required";
+    } else if (values.lastName.length > 20) {
+      errors.lastName = "Must be 20 characters or less";
+    }
+
+    if (!values.email) {
+      errors.email = "Required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+      errors.email = "Invalid email address";
+    }
+
+    return errors;
+  };
+
   return (
     <div className={styles.contactsContainer}>
       <Container>
@@ -198,20 +223,10 @@ function Contacts(props) {
                 >
                   <FormikForm>
                     <label htmlFor="name">Name</label>
-                    <Field
-                      id="name"
-                      name="name"
-                      placeholder="Jane"
-                      // value="Jane"
-                    />
+                    <Field id="name" name="name" placeholder="Jane" />
                     <br />
                     <label htmlFor="username">User Name</label>
-                    <Field
-                      id="username"
-                      name="username"
-                      placeholder="Doe"
-                      // value="Doe"
-                    />
+                    <Field id="username" name="username" placeholder="Doe" />
                     <br />
 
                     <label htmlFor="email">Email</label>
@@ -220,7 +235,6 @@ function Contacts(props) {
                       name="email"
                       placeholder="jane@acme.com"
                       type="email"
-                      // value="42@42.com"
                     />
                     <br />
                     {/* ############## */}
@@ -230,7 +244,6 @@ function Contacts(props) {
                       name="phone"
                       placeholder="025-857-8845"
                       type="text"
-                      // value="42@42.com"
                     />
                     <br />
                     {/* ############## */}
