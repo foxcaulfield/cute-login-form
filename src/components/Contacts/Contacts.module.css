@@ -8,11 +8,13 @@
   padding: 0.5em;
   background-color: white;
   border-radius: 0.3em;
+  /* height: 3em; */
 }
 
 /* = cols = */
 /* 1st col */
 .avatarAndNameCol {
+  /* height: 3em; */
   display: flex;
   align-items: center;
   text-align: start;
@@ -22,7 +24,7 @@
 }
 
 .avatar {
-  height: 2em;
+  height: 5em;
   margin-right: 0.5em;
 }
 
