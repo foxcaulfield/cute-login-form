@@ -11,23 +11,97 @@ import {
   Form,
   FormControl,
   Button,
-  // Spinner,
   Container,
   Row,
   Col,
   Image,
-  // Modal,
   Accordion,
   Card,
   useAccordionToggle,
+  // Collapse,
 } from "react-bootstrap";
 
 import { Formik, Field, Form as FormikForm } from "formik";
 
-function CustomToggle({ children, eventKey }) {
-  const decoratedOnClick = useAccordionToggle(eventKey, () =>
-    console.log("totally custom!")
+import { makeStyles } from "@material-ui/core/styles";
+import TextFieldMUI from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import TabsMUI from "@material-ui/core/Tabs";
+import TabMUI from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import ButtonMUI from "@material-ui/core/Button";
+// import Grow from "@material-ui/core/Grow";
+
+import { TextField as TextFieldFMUI } from "formik-material-ui";
+
+//tab panel for add contact
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
   );
+}
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
+//tab panel for contact info
+function TabPanelContactInfo(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`vertical-tabpanel-${index}`}
+      aria-labelledby={`vertical-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box p={3}>{children}</Box>}
+    </div>
+  );
+}
+
+function a22yProps(index) {
+  return {
+    id: `vertical-tab-${index}`,
+    "aria-controls": `vertical-tabpanel-${index}`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+    display: "flex",
+    // height: 224,
+  },
+  contactTabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
+//custom toggle for accordion
+function CustomToggle({ children, eventKey, onClickSideBehaviour }) {
+  const decoratedOnClick = useAccordionToggle(eventKey, onClickSideBehaviour);
 
   return (
     <Button variant="info" onClick={decoratedOnClick}>
@@ -36,7 +110,21 @@ function CustomToggle({ children, eventKey }) {
   );
 }
 
+//prevent submit on enter
+function onKeyDown(keyEvent) {
+  if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+    keyEvent.preventDefault();
+  }
+}
+
 function Contacts(props) {
+  //hook for tabs from material-ui (select the tab on add contact)
+  const [valueAddContactTabs, setValueAddContactTabs] = React.useState(0);
+
+  const handleChangeAddContactTabs = (event, newValue) => {
+    setValueAddContactTabs(newValue);
+  };
+
   //users GET
   const [users, setUsers] = useState({ contacts: [] });
 
@@ -50,7 +138,6 @@ function Contacts(props) {
     };
     fetchData();
   }, []);
-  //users GET
 
   //users POST
   // function addContact() {
@@ -93,39 +180,71 @@ function Contacts(props) {
   // }
   //users POST
 
-  const validate = (values) => {
-    const errors = {};
-    if (!values.firstName) {
-      errors.firstName = "Required";
-    } else if (values.firstName.length > 15) {
-      errors.firstName = "Must be 15 characters or less";
+  //validation
+  function validateName(value) {
+    let error;
+    if (!value) {
+      error = "Required";
+    } else if (value.length > 15) {
+      error = "Too long";
+    } else if (value === "admin") {
+      error = "Nice try!";
     }
+    return error;
+  }
 
-    if (!values.lastName) {
-      errors.lastName = "Required";
-    } else if (values.lastName.length > 20) {
-      errors.lastName = "Must be 20 characters or less";
+  function validatePhoneNumber(value) {
+    let error;
+    if (!value) {
+      error = "Required";
+    } else if (value.length > 15) {
+      error = "Too long";
     }
+    return error;
+  }
 
-    if (!values.email) {
-      errors.email = "Required";
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-    ) {
-      errors.email = "Invalid email address";
+  function validateEmail(value) {
+    let error;
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) && value) {
+      error = "Invalid email address";
     }
+    return error;
+  }
 
-    return errors;
+  //add contact accordion toggler
+  const [openAddContact, setOpenAddContact] = useState(false);
+
+  //for show add contact tab indicator on first load
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("resize"));
+  }, [openAddContact]);
+
+  //for vertical tabs on contact info
+  const classes = useStyles();
+  const [valueContactInfoTab, setValueContactInfoTab] = React.useState(0);
+
+  const handleChangeContactInfoTab = (event, newValue) => {
+    setValueContactInfoTab(newValue);
   };
 
   return (
     <div className={styles.contactsContainer}>
       <Container>
-        <Accordion>
+        {/* ACCORDION WITH ADD CONTACT FORM */}
+        <Accordion defaultActiveKey="0">
           {/* NAVBAR */}
           <Navbar bg="dark" variant="dark" expand sticky="top">
             <Navbar.Brand href="#home">Contacts</Navbar.Brand>
-            <Nav className="mr-auto"></Nav>
+            <Nav className="mr-auto">
+              <CustomToggle
+                eventKey="0"
+                onClickSideBehaviour={() => {
+                  setOpenAddContact(!openAddContact);
+                }}
+              >
+                {openAddContact ? "Cancel" : "Add contact"}
+              </CustomToggle>
+            </Nav>
 
             <Form inline>
               <FormControl
@@ -136,14 +255,12 @@ function Contacts(props) {
               <Button variant="outline-info">Search</Button>
             </Form>
           </Navbar>
+          {/* END NAVBAR */}
 
-          {/* ACCORDION WITH ADD CONTACT FORM */}
           <Card>
-            <CustomToggle eventKey="0">Add contact</CustomToggle>
-            <Accordion.Collapse eventKey="0">
+            <Accordion.Collapse eventKey="0" in={openAddContact}>
               <Card.Body>
-                Enter the data
-                {/* FORMIK FORM */}
+                {/* FORMIK FOR SUBMIT*/}
                 <Formik
                   initialValues={{
                     id: "id",
@@ -156,8 +273,8 @@ function Contacts(props) {
                       city: "",
                       zipcode: "",
                       geo: {
-                        lat: "",
-                        lng: "",
+                        lat: "-14.3990",
+                        lng: "-120.7677",
                       },
                     },
                     phone: "",
@@ -166,31 +283,11 @@ function Contacts(props) {
                       name: "",
                       catchPhrase: "",
                       bs: "",
-                      // id: "id",
-                      // name: "",
-                      // username: "",
-                      // email: "",
-                      // address: {
-                      //   street: "Ellsworth Summit",
-                      //   suite: "Suite 729",
-                      //   city: "Aliyaview",
-                      //   zipcode: "45169",
-                      //   geo: {
-                      //     lat: "-14.3990",
-                      //     lng: "-120.7677",
-                      //   },
-                      // },
-                      // phone: "586.493.6943 x140",
-                      // website: "jacynthe.com",
-                      // company: {
-                      //   name: "Abernathy Group",
-                      //   catchPhrase: "Implemented secondary concept",
-                      //   bs: "e-enable extensible e-tailers",
                     },
                   }}
-                  onSubmit={async (values) => {
-                    // function addContact() {
-                    //   const fetchData = async () => {
+                  //POST to server
+                  onSubmit={async (values, { resetForm }) => {
+                    console.log(values);
                     const { data } = await axios.post(
                       "https://jsonplaceholder.typicode.com/users",
                       {
@@ -199,89 +296,244 @@ function Contacts(props) {
                     );
                     let subData = data;
                     subData.values.id = users.contacts.length + 1;
+                    //set users
                     setUsers({
                       contacts: users.contacts
                         .reverse()
                         .concat(subData.values)
                         .reverse(),
                     });
-                    // alert(data.name + data.username);
-                    // console.log(data);
-                    // console.log({ users });
-                    // };
-                    // fetchData();
-                    // axios.post('/login', {
-                    //   firstName: 'Finn',
-                    //   lastName: 'Williams'
-                    // });
+                    //reset form
+                    resetForm();
+                    //collapse the accordion
+                    setOpenAddContact(false);
                   }}
-
-                  // await new Promise((r) => setTimeout(r, 500));
-
-                  // alert(JSON.stringify(values, null, 2));
-                  // }}
                 >
-                  <FormikForm>
-                    <label htmlFor="name">Name</label>
-                    <Field id="name" name="name" placeholder="Jane" />
-                    <br />
-                    <label htmlFor="username">User Name</label>
-                    <Field id="username" name="username" placeholder="Doe" />
-                    <br />
+                  {/* FORMIK FORM */}
+                  {({ errors, touched, isValidating }) => (
+                    <FormikForm onKeyDown={onKeyDown}>
+                      {/* TOP REQUIRED FIELDS */}
+                      <Grid container spacing={3}>
+                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                          <Field
+                            component={TextFieldFMUI}
+                            id="name"
+                            name="name"
+                            label="Fullname"
+                            variant="outlined"
+                            validate={validateName}
+                            helperText="Enter name"
+                            fullWidth
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                          <Field
+                            component={TextFieldFMUI}
+                            id="phone"
+                            name="phone"
+                            label="Phone"
+                            variant="outlined"
+                            type="text"
+                            validate={validatePhoneNumber}
+                            helperText="Enter phone number"
+                            fullWidth
+                          />
+                        </Grid>
+                      </Grid>
+                      {/* END TOP REQUIRED FIELDS */}
 
-                    <label htmlFor="email">Email</label>
-                    <Field
-                      id="email"
-                      name="email"
-                      placeholder="jane@acme.com"
-                      type="email"
-                    />
-                    <br />
-                    {/* ############## */}
-                    <label htmlFor="phone">Phone</label>
-                    <Field
-                      id="phone"
-                      name="phone"
-                      placeholder="025-857-8845"
-                      type="text"
-                    />
-                    <br />
-                    {/* ############## */}
+                      {/* TABS WITH INPUTS */}
+                      <TabsMUI
+                        variant="fullWidth"
+                        value={valueAddContactTabs}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        onChange={handleChangeAddContactTabs}
+                      >
+                        <TabMUI label="Info" {...a11yProps(0)} selected />
+                        <TabMUI label="Address" {...a11yProps(1)} />
+                        <TabMUI label="Company" {...a11yProps(2)} />
+                        {/* <TabMUI fullwidth label="Info"/>
+                          
+                        <TabMUI fullwidth label="Address" />
+                        <TabMUI fullwidth label="Company" /> */}
+                      </TabsMUI>
 
-                    <button type="submit">Submit</button>
-                  </FormikForm>
+                      {/* FIRST TAB (INFO)*/}
+                      <TabPanel value={valueAddContactTabs} index={0}>
+                        <Grid container spacing={3}>
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <Field
+                              component={TextFieldFMUI}
+                              id="username"
+                              name="username"
+                              label="Skype"
+                              variant="outlined"
+                              type="text"
+                              // validate={validatePhoneNumber}
+                              // helperText="Enter Skype login"
+                              fullWidth
+                            />
+                          </Grid>
+                          {/* {errors.name && touched.name && <div>{errors.name}</div>} */}
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <Field
+                              component={TextFieldFMUI}
+                              id="email"
+                              name="email"
+                              label="Email"
+                              variant="outlined"
+                              type="email"
+                              validate={validateEmail}
+                              // helperText="Enter email"
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <Field
+                              component={TextFieldFMUI}
+                              id="website"
+                              name="website"
+                              label="Website"
+                              variant="outlined"
+                              type="text"
+                              // validate={validatePhoneNumber}
+                              // helperText="Enter email"
+                              fullWidth
+                            />
+                          </Grid>
+                        </Grid>
+                      </TabPanel>
+                      {/* END FIRST TAB (INFO) */}
+
+                      {/* SECOND TAB (ADDRESS) */}
+                      <TabPanel value={valueAddContactTabs} index={1}>
+                        <Grid container spacing={3}>
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <Field
+                              component={TextFieldFMUI}
+                              id="street"
+                              name="address.street"
+                              label="Street"
+                              variant="outlined"
+                              type="text"
+                              // validate={validatePhoneNumber}
+                              // helperText="Enter email"
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <Field
+                              component={TextFieldFMUI}
+                              id="zipcode"
+                              name="address.zipcode"
+                              label="Zipcode"
+                              variant="outlined"
+                              type="text"
+                              // validate={validatePhoneNumber}
+                              // helperText="Enter email"
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <Field
+                              component={TextFieldFMUI}
+                              id="city"
+                              name="address.city"
+                              label="City"
+                              variant="outlined"
+                              type="text"
+                              // validate={validatePhoneNumber}
+                              // helperText="Enter email"
+                              fullWidth
+                            />
+                          </Grid>
+                        </Grid>
+                      </TabPanel>
+                      {/* END SECOND TAB (ADDRESS) */}
+
+                      {/* THIRD TAB (COMPANY) */}
+                      <TabPanel value={valueAddContactTabs} index={2}>
+                        <Grid container spacing={3}>
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <Field
+                              component={TextFieldFMUI}
+                              id="companyName"
+                              name="company.name"
+                              label="Company name"
+                              variant="outlined"
+                              type="text"
+                              // validate={validatePhoneNumber}
+                              // helperText="Enter email"
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <Field
+                              component={TextFieldFMUI}
+                              id="catchPhrase"
+                              name="company.catchPhrase"
+                              label="Catchphrase"
+                              variant="outlined"
+                              type="text"
+                              // validate={validatePhoneNumber}
+                              // helperText="Enter email"
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <Field
+                              component={TextFieldFMUI}
+                              id="bs"
+                              name="company.bs"
+                              label="Business"
+                              variant="outlined"
+                              type="text"
+                              // validate={validatePhoneNumber}
+                              // helperText="Enter email"
+                              fullWidth
+                            />
+                          </Grid>
+                        </Grid>
+                      </TabPanel>
+                      {/* END THIRD TAB (COMPANY) */}
+
+                      {/* BUTTONS TO SUBMIT AND REST FORM */}
+                      <Grid container spacing={5}>
+                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                          <ButtonMUI
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            fullWidth
+                            // disabled
+                          >
+                            Add
+                          </ButtonMUI>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                          <ButtonMUI
+                            // variant="contained"
+                            color="primary"
+                            type="reset"
+                            fullWidth
+                            // disabled
+                          >
+                            Reset
+                          </ButtonMUI>
+                        </Grid>
+                      </Grid>
+                      {/* END BUTTONS TO SUBMIT AND REST FORM */}
+                    </FormikForm>
+                  )}
+                  {/* END FORMIK FORM */}
                 </Formik>
-                {/* BOOTSTRAP FORM */}
-                {/* <Form onSubmit={addContact}>
-                  <Form.Row>
-                    <Form.Group as={Col} controlId="formGridName">
-                      <Form.Label>Name</Form.Label>
-                      <Form.Control type="text" placeholder="Enter name" />
-                    </Form.Group>
-
-                    <Form.Group as={Col} controlId="formGridEmail">
-                      <Form.Label>Email</Form.Label>
-                      <Form.Control type="email" placeholder="Enter email" />
-                    </Form.Group>
-                  </Form.Row>
-
-                  <Form.Row>
-                    <Form.Group as={Col} controlId="formGridPhone">
-                      <Form.Label>Phone</Form.Label>
-                      <Form.Control />
-                    </Form.Group>
-                  </Form.Row>
-
-                  <Button variant="primary" type="submit">
-                    Submit
-                  </Button>
-                </Form> */}
+                {/* END FORMIK FOR SUBMIT*/}
               </Card.Body>
             </Accordion.Collapse>
           </Card>
         </Accordion>
-
-        {/* {!users.contacts && <Spinner animation="border" />} */}
+        {/* END ACCORDION WITH ADD CONTACT FORM */}
 
         {/* CONTACT CARD */}
         {users.contacts &&
@@ -290,10 +542,12 @@ function Contacts(props) {
             <>
               <div key={item.id} className={styles.contactCard}>
                 <Accordion>
+                  {/* AVATAR & NAME & PHONE */}
                   <Row xs={1} sm={1} md={2} lg={2}>
                     <Col className={styles.avatarAndNameCol}>
                       <Image
                         className={styles.avatar}
+                        // src={`https://picsum.photos/200?random=${item.id}`}
                         src={`https://picsum.photos/200?random=${item.id}`}
                         alt={`user_avatar_${item.id}`}
                         rounded
@@ -312,12 +566,13 @@ function Contacts(props) {
                       <CustomToggle eventKey="1">Profile</CustomToggle>
                     </Col>
                   </Row>
+                  {/* END AVATAR & NAME & PHONE */}
 
                   {/* ACCORDION WITH INFORMATION TABS */}
                   <Card>
                     <Accordion.Collapse eventKey="1">
                       <Card.Body>
-                        <Tabs defaultActiveKey="Bio" id="contactTab">
+                        {/* <Tabs defaultActiveKey="Bio" id="contactTab">
                           <Tab
                             eventKey="Bio"
                             title="Bio"
@@ -326,6 +581,8 @@ function Contacts(props) {
                             <strong>Nickname:</strong> <em>{item.username}</em>
                             <br />
                             <strong>Email:</strong> <em>{item.email}</em>
+                            <br />
+                            <strong>Website:</strong> <em>{item.website}</em>
                           </Tab>
                           <Tab
                             eventKey="Address"
@@ -335,25 +592,13 @@ function Contacts(props) {
                             <strong>Street:</strong>{" "}
                             <em>{item.address.street}</em>
                             <br />
-                            <strong>Suite:</strong>{" "}
-                            <em>{item.address.suite}</em>
-                            <br />
+                           
                             <strong>City:</strong> <em>{item.address.city}</em>
                             <br />
                             <strong>Zipcode:</strong>{" "}
                             <em>{item.address.zipcode}</em>
                           </Tab>
-                          <Tab
-                            eventKey="Location"
-                            title="Location"
-                            className={styles.contactTab}
-                          >
-                            <strong>Latitude:</strong>{" "}
-                            <em>{item.address.geo.lat}</em>
-                            <br />
-                            <strong>Longitude:</strong>{" "}
-                            <em>{item.address.geo.lng}</em>
-                          </Tab>
+                    
                           <Tab
                             eventKey="Company"
                             title="Company"
@@ -368,426 +613,87 @@ function Contacts(props) {
                             <strong>Business:</strong>{" "}
                             <em>{item.company.bs}</em>
                           </Tab>
-                        </Tabs>
+                        </Tabs> */}
+
+                        <div className={classes.root}>
+                          <TabsMUI
+                            orientation="vertical"
+                            variant="scrollable"
+                            value={valueContactInfoTab}
+                            onChange={handleChangeContactInfoTab}
+                            className={classes.contactTabs}
+                          >
+                            <TabMUI label="Info" {...a22yProps(0)} />
+                            <TabMUI label="Address" {...a22yProps(1)} />
+                            <TabMUI label="Company" {...a22yProps(2)} />
+                          </TabsMUI>
+                          <TabPanelContactInfo
+                            value={valueContactInfoTab}
+                            index={0}
+                          >
+                            Item One
+                            <TextFieldMUI
+                              id="filled-full-width"
+                              label="Label"
+                              style={{ margin: 8 }}
+                              placeholder="Placeholder"
+                              helperText="Full width!"
+                              fullWidth
+                              margin="normal"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              variant="filled"
+                            />
+                            <strong>Nickname:</strong> <em>{item.username}</em>
+                            <br />
+                            <strong>Email:</strong> <em>{item.email}</em>
+                            <br />
+                            <strong>Website:</strong> <em>{item.website}</em>
+                          </TabPanelContactInfo>
+                          <TabPanelContactInfo
+                            value={valueContactInfoTab}
+                            index={1}
+                          >
+                            Item Two
+                            <strong>Street:</strong>{" "}
+                            <em>{item.address.street}</em>
+                            <br />
+                            {/* <strong>Suite:</strong>{" "}
+                            <em>{item.address.suite}</em>
+                            <br /> */}
+                            <strong>City:</strong> <em>{item.address.city}</em>
+                            <br />
+                            <strong>Zipcode:</strong>{" "}
+                            <em>{item.address.zipcode}</em>
+                          </TabPanelContactInfo>
+                          <TabPanelContactInfo
+                            value={valueContactInfoTab}
+                            index={2}
+                          >
+                            Item Three
+                            <strong>Company name</strong>:{" "}
+                            <em>{item.company.name}</em>
+                            <br />
+                            <strong> Catchphrase:</strong>
+                            <em>{item.company.catchPhrase}</em>
+                            <br />
+                            <strong>Business:</strong>{" "}
+                            <em>{item.company.bs}</em>
+                          </TabPanelContactInfo>
+                        </div>
                       </Card.Body>
                     </Accordion.Collapse>
                   </Card>
+                  {/* END ACCORDION WITH INFORMATION TABS */}
                 </Accordion>
               </div>
             </>
           ))}
+        {/*END CONTACT CARD */}
       </Container>
     </div>
   );
 }
 
 export default Contacts;
-
-//Alternative way to render #1
-// Bio:
-//             <br />
-//             Name: <em>{item.name}</em>
-//             <br />
-//             Nickname: <em>{item.username} </em>
-//             <br />
-//             Email: <em>{item.email} </em>
-//             <br />
-//             Address:
-//             <br />
-//             Street: <em>{item.address.street} </em>
-//             <br />
-//             Suite: <em>{item.address.suite} </em>
-//             <br />
-//             City: <em>{item.address.city} </em>
-//             <br />
-//             Zipcode: <em>{item.address.zipcode} </em>
-//             <br />
-//             Location:
-//             <br />
-//             Latitude:
-//             <em>{item.address.geo.lat} </em>
-//             <br />
-//             Longitude:
-//             <em>{item.address.geo.lng} </em>
-//             <br />
-//             Phone number: <em>{item.phone} </em>
-//             <br />
-//             Website: <em>{item.website} </em>
-//             <br />
-//             Company:
-//             <br />
-//             Company name: <em>{item.company.name} </em>
-//             <br />
-//             Catchphrase: <em>{item.company.catchPhrase} </em>
-//             <br />
-//             Business: <em>{item.company.bs} </em>
-//             <br />
-//             <hr />
-
-// Alternative way to render #2
-//              {users.contacts &&
-//         users.contacts.map((item) => (
-//           <div key={item.id}>
-//             {Object.entries(item).map((key) => (
-//               <p>
-//                 {" "}
-//                 <strong>{JSON.stringify(key[0])}</strong>:
-//                 {typeof key[1] !== "object"
-//                   ? JSON.stringify(key[1])
-//                   : Object.entries(key[1]).map((keyInner1) => (
-//                       <p>
-//                         <u> {JSON.stringify(keyInner1[0])}</u> :
-//                         {typeof keyInner1[1] !== "object"
-//                           ? JSON.stringify(keyInner1[1])
-//                           : Object.entries(keyInner1[1]).map((keyInner2) => (
-//                               <>
-//                                 <p>
-//                                   <em>{JSON.stringify(keyInner2[0])}</em> :
-//                                   {JSON.stringify(keyInner2[1])}
-//                                 </p>
-//                               </>
-//                             ))}
-//                       </p>
-//                     ))}
-//               </p>
-//             ))}
-
-//=========================================================
-// import React, { useState, useEffect } from "react";
-// import * as axios from "axios";
-// import styles from "./Contacts.module.css";
-// import "./Contacts.module.css";
-
-// import {
-//   Tabs,
-//   Tab,
-//   Navbar,
-//   Nav,
-//   Form,
-//   FormControl,
-//   Button,
-//   Spinner,
-//   Container,
-//   Row,
-//   Col,
-//   Image,
-//   Modal,
-//   Accordion,
-//   Card,
-//   useAccordionToggle,
-// } from "react-bootstrap";
-
-// function CustomToggle({ children, eventKey }) {
-//   const decoratedOnClick = useAccordionToggle(eventKey, () =>
-//     console.log("totally custom!")
-//   );
-
-//   return (
-//     <Button variant="info" onClick={decoratedOnClick}>
-//       {children}
-//     </Button>
-//   );
-// }
-
-// function Contacts(props) {
-//   //users GET
-//   const [users, setUsers] = useState({ contacts: [] });
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const { data } = await axios.get(
-//         "https://jsonplaceholder.typicode.com/users"
-//       );
-//       setUsers({ contacts: data.reverse() });
-//       console.log(data);
-//     };
-//     fetchData();
-//   }, [setUsers]);
-//   //users GET
-
-//   function addContact() {
-//     const fetchData = async () => {
-//       const { data } = await axios.post(
-//         "https://jsonplaceholder.typicode.com/users",
-//         {
-//           name: "Nicholas Runolfsdottir V",
-//           username: "Maxime_Nienow",
-//           email: "Sherwood@rosamond.me",
-//           address: {
-//             street: "Ellsworth Summit",
-//             suite: "Suite 729",
-//             city: "Aliyaview",
-//             zipcode: "45169",
-//             geo: {
-//               lat: "-14.3990",
-//               lng: "-120.7677",
-//             },
-//           },
-//           phone: "586.493.6943 x140",
-//           website: "jacynthe.com",
-//           company: {
-//             name: "Abernathy Group",
-//             catchPhrase: "Implemented secondary concept",
-//             bs: "e-enable extensible e-tailers",
-//           },
-//         }
-//       );
-//       setUsers({ contacts: users.contacts.concat(data) });
-//       // alert(data.name + data.username);
-//       // console.log(data);
-//       // console.log({ users });
-//     };
-//     fetchData();
-//     // axios.post('/login', {
-//     //   firstName: 'Finn',
-//     //   lastName: 'Williams'
-//     // });
-//   }
-
-//   return (
-//     <div className={styles.contactsContainer}>
-//       <Container>
-//         <Accordion>
-//           <Navbar bg="dark" variant="dark" expand sticky="top">
-//             <Navbar.Brand href="#home">Contacts</Navbar.Brand>
-//             <Nav className="mr-auto"></Nav>
-
-//             <Form inline>
-//               <FormControl
-//                 type="text"
-//                 placeholder="Search"
-//                 className="mr-sm-2"
-//               />
-//               <Button variant="outline-info">Search</Button>
-//             </Form>
-//           </Navbar>
-
-//           <Card>
-//             <CustomToggle eventKey="0">Add contact</CustomToggle>
-//             <Accordion.Collapse eventKey="0">
-//               <Card.Body>
-//                 Hello! I'm the body
-//                 <Form onSubmit={addContact}>
-//                   <Form.Row>
-//                     <Form.Group as={Col} controlId="formGridName">
-//                       <Form.Label>Name</Form.Label>
-//                       <Form.Control type="text" placeholder="Enter name" />
-//                     </Form.Group>
-//                     <Form.Group as={Col} controlId="formGridEmail">
-//                       <Form.Label>Email</Form.Label>
-//                       <Form.Control type="email" placeholder="Enter email" />
-//                     </Form.Group>
-
-//                     <Form.Group as={Col} controlId="formGridPassword">
-//                       <Form.Label>Password</Form.Label>
-//                       <Form.Control type="password" placeholder="Password" />
-//                     </Form.Group>
-//                   </Form.Row>
-
-//                   <Form.Group controlId="formGridAddress1">
-//                     <Form.Label>Address</Form.Label>
-//                     <Form.Control placeholder="1234 Main St" />
-//                   </Form.Group>
-
-//                   <Form.Group controlId="formGridAddress2">
-//                     <Form.Label>Address 2</Form.Label>
-//                     <Form.Control placeholder="Apartment, studio, or floor" />
-//                   </Form.Group>
-
-//                   <Form.Row>
-//                     <Form.Group as={Col} controlId="formGridCity">
-//                       <Form.Label>City</Form.Label>
-//                       <Form.Control />
-//                     </Form.Group>
-
-//                     <Form.Group as={Col} controlId="formGridState">
-//                       <Form.Label>State</Form.Label>
-//                       <Form.Control as="select" defaultValue="Choose...">
-//                         <option>Choose...</option>
-//                         <option>...</option>
-//                       </Form.Control>
-//                     </Form.Group>
-
-//                     <Form.Group as={Col} controlId="formGridZip">
-//                       <Form.Label>Zip</Form.Label>
-//                       <Form.Control />
-//                     </Form.Group>
-//                   </Form.Row>
-
-//                   <Form.Group id="formGridCheckbox">
-//                     <Form.Check type="checkbox" label="Check me out" />
-//                   </Form.Group>
-
-//                   <Button variant="primary" type="submit">
-//                     Submit
-//                   </Button>
-//                 </Form>
-//               </Card.Body>
-//             </Accordion.Collapse>
-//           </Card>
-//         </Accordion>
-
-//         {!users.contacts && <Spinner animation="border" />}
-//         {users.contacts &&
-//           users.contacts.map((item) => (
-//             // <Row>
-//             <>
-//               <div key={item.id} className={styles.contactCard}>
-//                 <Accordion>
-//                   <Row xs={1} sm={1} md={2} lg={2}>
-//                     <Col className={styles.avatarAndNameCol}>
-//                       <Image
-//                         className={styles.avatar}
-//                         src={`https://picsum.photos/200?random=${item.id}`}
-//                         alt={`user_avatar_${item.id}`}
-//                         rounded
-//                         fluid
-//                       />
-
-//                       <span className={styles.name}>{item.name}</span>
-//                     </Col>
-
-//                     <Col className={styles.cityCol}>
-//                       <span className={styles.city}>{item.phone}</span>
-
-//                       <CustomToggle eventKey="1">Profile</CustomToggle>
-//                     </Col>
-//                   </Row>
-
-//                   <Card>
-//                     <Accordion.Collapse eventKey="1">
-//                       <Card.Body>
-//                         <Tabs defaultActiveKey="Bio" id="contactTab">
-//                           <Tab
-//                             eventKey="Bio"
-//                             title="Bio"
-//                             className={styles.contactTab}
-//                           >
-//                             <strong>Nickname:</strong> <em>{item.username}</em>
-//                             <br />
-//                             <strong>Email:</strong> <em>{item.email}</em>
-//                           </Tab>
-//                           <Tab
-//                             eventKey="Address"
-//                             title="Address"
-//                             className={styles.contactTab}
-//                           >
-//                             <strong>Street:</strong>{" "}
-//                             <em>{item.address.street}</em>
-//                             <br />
-//                             <strong>Suite:</strong>{" "}
-//                             <em>{item.address.suite}</em>
-//                             <br />
-//                             <strong>City:</strong> <em>{item.address.city}</em>
-//                             <br />
-//                             <strong>Zipcode:</strong>{" "}
-//                             <em>{item.address.zipcode}</em>
-//                           </Tab>
-//                           <Tab
-//                             eventKey="Location"
-//                             title="Location"
-//                             className={styles.contactTab}
-//                           >
-//                             <strong>Latitude:</strong>{" "}
-//                             <em>{item.address.geo.lat}</em>
-//                             <br />
-//                             <strong>Longitude:</strong>{" "}
-//                             <em>{item.address.geo.lng}</em>
-//                           </Tab>
-//                           <Tab
-//                             eventKey="Company"
-//                             title="Company"
-//                             className={styles.contactTab}
-//                           >
-//                             <strong>Company name</strong>:{" "}
-//                             <em>{item.company.name}</em>
-//                             <br />
-//                             <strong> Catchphrase:</strong>
-//                             <em>{item.company.catchPhrase}</em>
-//                             <br />
-//                             <strong>Business:</strong>{" "}
-//                             <em>{item.company.bs}</em>
-//                           </Tab>
-//                         </Tabs>
-//                       </Card.Body>
-//                     </Accordion.Collapse>
-//                   </Card>
-//                 </Accordion>
-//               </div>
-//             </>
-//           ))}
-//       </Container>
-//     </div>
-//   );
-// }
-
-// export default Contacts;
-
-// //Alternative way to render #1
-// // Bio:
-// //             <br />
-// //             Name: <em>{item.name}</em>
-// //             <br />
-// //             Nickname: <em>{item.username} </em>
-// //             <br />
-// //             Email: <em>{item.email} </em>
-// //             <br />
-// //             Address:
-// //             <br />
-// //             Street: <em>{item.address.street} </em>
-// //             <br />
-// //             Suite: <em>{item.address.suite} </em>
-// //             <br />
-// //             City: <em>{item.address.city} </em>
-// //             <br />
-// //             Zipcode: <em>{item.address.zipcode} </em>
-// //             <br />
-// //             Location:
-// //             <br />
-// //             Latitude:
-// //             <em>{item.address.geo.lat} </em>
-// //             <br />
-// //             Longitude:
-// //             <em>{item.address.geo.lng} </em>
-// //             <br />
-// //             Phone number: <em>{item.phone} </em>
-// //             <br />
-// //             Website: <em>{item.website} </em>
-// //             <br />
-// //             Company:
-// //             <br />
-// //             Company name: <em>{item.company.name} </em>
-// //             <br />
-// //             Catchphrase: <em>{item.company.catchPhrase} </em>
-// //             <br />
-// //             Business: <em>{item.company.bs} </em>
-// //             <br />
-// //             <hr />
-
-// // Alternative way to render #2
-// //              {users.contacts &&
-// //         users.contacts.map((item) => (
-// //           <div key={item.id}>
-// //             {Object.entries(item).map((key) => (
-// //               <p>
-// //                 {" "}
-// //                 <strong>{JSON.stringify(key[0])}</strong>:
-// //                 {typeof key[1] !== "object"
-// //                   ? JSON.stringify(key[1])
-// //                   : Object.entries(key[1]).map((keyInner1) => (
-// //                       <p>
-// //                         <u> {JSON.stringify(keyInner1[0])}</u> :
-// //                         {typeof keyInner1[1] !== "object"
-// //                           ? JSON.stringify(keyInner1[1])
-// //                           : Object.entries(keyInner1[1]).map((keyInner2) => (
-// //                               <>
-// //                                 <p>
-// //                                   <em>{JSON.stringify(keyInner2[0])}</em> :
-// //                                   {JSON.stringify(keyInner2[1])}
-// //                                 </p>
-// //                               </>
-// //                             ))}
-// //                       </p>
-// //                     ))}
-// //               </p>
-// //             ))}
