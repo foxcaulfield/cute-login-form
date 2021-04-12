@@ -35,6 +35,11 @@ import ButtonMUI from "@material-ui/core/Button";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { TextField as TextFieldFMUI } from "formik-material-ui";
 import { FlashAutoTwoTone } from "@material-ui/icons";
@@ -146,6 +151,22 @@ function onKeyDown(keyEvent) {
 }
 
 function Contacts(props) {
+  //for deleting contact confirmation alert dialog
+  const [
+    openDeletingContactConfirmationAlertDialog,
+    setOpenDeletingContactConfirmationAlertDialog,
+  ] = React.useState(false);
+
+  const handleClickOpenDeletingContactConfirmationAlertDialog = (contactId) => {
+    // let handleContactId = contactId;
+    alert(contactId);
+    setOpenDeletingContactConfirmationAlertDialog(true);
+  };
+
+  const handleCloseDeletingContactConfirmationAlertDialog = () => {
+    setOpenDeletingContactConfirmationAlertDialog(false);
+  };
+
   // hook for contact is editing
   // const [isEditingContact, setIsEditingContact] = React.useState(false);
 
@@ -275,6 +296,57 @@ function Contacts(props) {
 
   return (
     <div className={styles.contactsContainer}>
+      {/* BUTTON EXPERIMENT */}
+
+      {/* <Button                       
+                                      variant="outlined"
+                                      color="primary"
+                                      onClick={handleClickOpenDeletingContactConfirmationAlertDialog}
+                                      >
+                                      Open alert dialog
+                                      </Button> */}
+      <Dialog
+        open={openDeletingContactConfirmationAlertDialog}
+        onClose={handleCloseDeletingContactConfirmationAlertDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete contact?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Contact will be deleted
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              // setUsers({
+              //   contacts: users.contacts.filter(
+              //     (el) => el.id !== item.id
+              //   ),
+              // });
+              handleCloseDeletingContactConfirmationAlertDialog();
+            }}
+            color="primary"
+          >
+            Disagree
+          </Button>
+
+          <Button
+            onClick={() => {
+              handleCloseDeletingContactConfirmationAlertDialog();
+              // setUsers({
+              //   contacts: users.contacts.filter((el) => el.id !== item.id),
+              // });
+            }}
+            color="primary"
+            autoFocus
+          >
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* BUTTON EXPERIMENT */}
       {/* ALERT MESSAGE FOR CONTACT EDITED */}
       <Snackbar
         open={openAlertContactEdited}
@@ -673,7 +745,8 @@ function Contacts(props) {
                                 },
                               }}
                               onSubmit={(values, actions) => {
-                                console.log(actions);
+                                // props.handleSubmit();
+                                // console.log(actions);
                                 actions.setSubmitting(true);
                                 // actions.setSubmitting(true);
                                 // alert(JSON.stringify(values, null, 2));
@@ -688,34 +761,47 @@ function Contacts(props) {
                                 //   }),
                                 // });
 
-                                setTimeout(() => {
-                                  setUsers({
-                                    contacts: users.contacts.map((el) => {
-                                      if (el.id === item.id) {
-                                        el = values;
-
-                                        setTimeout(
-                                          (el.isEditing = !el.isEditing),
-                                          1000
-                                        );
-
-                                        if (el.isEditing === true) {
-                                          setTimeout(
-                                            (el.isEditing = false),
-                                            1000
-                                          );
-                                        }
+                                setUsers({
+                                  contacts: users.contacts.map((el) => {
+                                    if (el.id === item.id) {
+                                      el = values;
+                                      el.isEditing = !el.isEditing;
+                                      if (el.isEditing === true) {
+                                        el.isEditing = false;
                                       }
-                                      //reset form for proper validation
-                                      setTimeout(
-                                        actions.resetForm({ values: el }),
-                                        1000
-                                      );
-                                      // return el;
-                                      return el;
-                                    }),
-                                  });
-                                }, 1000);
+                                    }
+                                    //reset form for proper validation
+                                    actions.resetForm({ values: el });
+                                    return el;
+                                  }),
+                                });
+                                // setUsers({
+                                //   contacts: users.contacts.map((el) => {
+                                //     if (el.id === item.id) {
+                                //       el = values;
+
+                                //       // setTimeout(
+                                //         (el.isEditing = !el.isEditing),
+                                //         // 1000
+                                //       // );
+
+                                //       if (el.isEditing === true) {
+                                //         // setTimeout(
+                                //           (el.isEditing = false),
+                                //           // 1000
+                                //         // );
+                                //       }
+                                //     }
+                                //     //reset form for proper validation
+                                //     // setTimeout(
+                                //       actions.resetForm({ values: el }),
+                                //       // 1000
+                                //     // );
+                                //     // return el;
+                                //     return el;
+                                //   }),
+                                // });
+                                // }, 1000);
                                 // setUsers({
                                 //   contacts: users.contacts.map((el) => {
                                 //     if (el.id === item.id) {
@@ -734,10 +820,10 @@ function Contacts(props) {
                             >
                               {(props) => (
                                 <FormikForm
-                                  onChange={(e) => console.log(props)}
-                                  // onBlur={props.handleBlur}
-                                  // disabled={true}
-                                  // onSubmit={(e) => console.log(e)}
+                                // onChange={(e) => console.log(props)}
+                                // onBlur={props.handleBlur}
+                                // disabled={true}
+                                // onSubmit={() => props.setSubmitting(true)}
                                 >
                                   <Field
                                     component={TextFieldFMUI}
@@ -1019,11 +1105,8 @@ function Contacts(props) {
                                           type="submit"
                                           eventKey="1"
                                           variant="contained"
-                                          disabled={props.isSubmiting}
-                                          onClickSideBehaviour={() => {
-                                            // alert(item.id);
-                                            props.handleSubmit();
-                                          }}
+                                          // disabled={props.handleSubmit()}
+                                          disabled={props.isSubmitting}
                                         >
                                           Save
                                         </CustomToggle>
@@ -1035,11 +1118,14 @@ function Contacts(props) {
                                         variant="contained"
                                         color="secondary"
                                         onClick={() => {
-                                          setUsers({
-                                            contacts: users.contacts.filter(
-                                              (el) => el.id !== item.id
-                                            ),
-                                          });
+                                          // setUsers({
+                                          //   contacts: users.contacts.filter(
+                                          //     (el) => el.id !== item.id
+                                          //   ),
+                                          // });
+                                          handleClickOpenDeletingContactConfirmationAlertDialog(
+                                            item.id
+                                          );
                                         }}
                                       >
                                         DELETE
