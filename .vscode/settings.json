@@ -1,0 +1,7 @@
+{
+    "editor.formatOnSave": true,
+    "prettier.withNodeModules": true,
+    "prettier.enableDebugLogs": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "files.trimTrailingWhitespace": true
+}

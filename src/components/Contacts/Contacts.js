@@ -151,6 +151,9 @@ function onKeyDown(keyEvent) {
 }
 
 function Contacts(props) {
+  //experemental behaviour for deleting users wit modal dialog
+  const [idToDelete, setIdToDelete] = useState(null);
+
   //for deleting contact confirmation alert dialog
   const [
     openDeletingContactConfirmationAlertDialog,
@@ -159,8 +162,13 @@ function Contacts(props) {
 
   const handleClickOpenDeletingContactConfirmationAlertDialog = (contactId) => {
     // let handleContactId = contactId;
-    alert(contactId);
+    // alert(contactId);
+    // console.log("props here");
+    // console.log(users);
+    setIdToDelete(contactId);
+
     setOpenDeletingContactConfirmationAlertDialog(true);
+    //ASYNCH BEHAVIOR HERE
   };
 
   const handleCloseDeletingContactConfirmationAlertDialog = () => {
@@ -298,7 +306,7 @@ function Contacts(props) {
     <div className={styles.contactsContainer}>
       {/* BUTTON EXPERIMENT */}
 
-      {/* <Button                       
+      {/* <Button
                                       variant="outlined"
                                       color="primary"
                                       onClick={handleClickOpenDeletingContactConfirmationAlertDialog}
@@ -318,32 +326,37 @@ function Contacts(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
+          <ButtonMUI
             onClick={() => {
-              // setUsers({
-              //   contacts: users.contacts.filter(
-              //     (el) => el.id !== item.id
-              //   ),
-              // });
+              //clean idToDelete
+              setIdToDelete(null);
+
               handleCloseDeletingContactConfirmationAlertDialog();
             }}
             color="primary"
           >
             Disagree
-          </Button>
+          </ButtonMUI>
 
-          <Button
+          <ButtonMUI
             onClick={() => {
+              //deleting the contact
+              setUsers({
+                contacts: users.contacts.filter((el) => el.id !== idToDelete),
+              });
+              //clean idToDelete
+              setIdToDelete(null);
+
               handleCloseDeletingContactConfirmationAlertDialog();
               // setUsers({
               //   contacts: users.contacts.filter((el) => el.id !== item.id),
               // });
             }}
-            color="primary"
+            color="secondary"
             autoFocus
           >
             Agree
-          </Button>
+          </ButtonMUI>
         </DialogActions>
       </Dialog>
       {/* BUTTON EXPERIMENT */}
@@ -485,7 +498,7 @@ function Contacts(props) {
                         <TabMUI label="Address" {...a11yProps(1)} />
                         <TabMUI label="Company" {...a11yProps(2)} />
                         {/* <TabMUI fullwidth label="Info"/>
-                          
+
                         <TabMUI fullwidth label="Address" />
                         <TabMUI fullwidth label="Company" /> */}
                       </TabsMUI>

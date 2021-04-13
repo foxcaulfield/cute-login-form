@@ -17,6 +17,14 @@
   margin: 0;
   padding: 0;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 80px rgba(0, 0, 0, 0) inset !important;
+}
+
 body {
   background: url("https://images.pexels.com/photos/1655166/pexels-photo-1655166.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")
     no-repeat center center;
