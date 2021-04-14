@@ -2,13 +2,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/Login/Login";
 import Contacts from "./components/Contacts/Contacts";
-import {
-  BrowserRouter,
-  Redirect,
-  Route,
-  useHistory,
-  withRouter,
-} from "react-router-dom";
+import { BrowserRouter, Redirect, Route } from "react-router-dom";
 
 function App() {
   return (
@@ -24,5 +18,5 @@ function App() {
     </BrowserRouter>
   );
 }
-// export default withRouter(App);
+
 export default App;

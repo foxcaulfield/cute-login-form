@@ -9,18 +9,14 @@ import { TextField as TextFieldFMUI } from "formik-material-ui";
 import ButtonMUI from "@material-ui/core/Button";
 import { useHistory } from "react-router";
 
-// function onKeyDown(keyEvent) {
-//   if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
-//     keyEvent.preventDefault();
-//   }
-// }
-
 function Login(props) {
+  //for page routing
   let history = useHistory();
   function onSubmitFromLogin() {
     history.push("/contacts");
     console.log(history);
   }
+
   //validation
   console.log(props);
   function validateEmail(value) {
@@ -50,39 +46,6 @@ function Login(props) {
 
   return (
     <>
-      {/* <Form className={styles.container}>
-        <div className={styles.holder}>
-          <div className={styles.card}>
-            <div className={styles.card__text}>
-              <Form.Group
-                controlId="formBasicEmail"
-                className={styles.classForm}
-              >
-                <Form.Label>
-                  <strong>Email address</strong>
-                </Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-                <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
-                </Form.Text>
-              </Form.Group>
-
-              <Form.Group controlId="formBasicPassword">
-                <Form.Label>
-                  <strong>Password</strong>
-                </Form.Label>
-                <Form.Control type="password" placeholder="Password" />
-              </Form.Group>
-              <Form.Group controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
-              </Form.Group>
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
-            </div>
-          </div>
-        </div>
-      </Form> */}
       <Formik
         initialValues={{
           email: "",
@@ -97,24 +60,12 @@ function Login(props) {
               values,
             }
           );
-          // props.history.push();
-          // props.handleSubmit("/contacts");
+
+          //routing after POST
           onSubmitFromLogin();
-          // console.log(data.values);
-          // console.log(!!data.values);
-          // let subData = data;
-          // subData.values.id = users.contacts.length + 1;
-          // set users with new contact
-          // setUsers({
-          //   contacts: users.contacts
-          //     // .slice(0)
-          //     .concat(subData.values),
-          // });
 
           //reset form
           resetForm();
-          //collapse the accordion
-          // setOpenAddContact(false);
         }}
       >
         {/* FORMIK FORM */}
@@ -127,9 +78,6 @@ function Login(props) {
                     controlId="formBasicEmail"
                     className={styles.classForm}
                   >
-                    {/* <Form.Label>
-                      <strong>Email address</strong>
-                    </Form.Label> */}
                     <Field
                       component={TextFieldFMUI}
                       id="email"
@@ -141,20 +89,9 @@ function Login(props) {
                       helperText="Enter email"
                       fullWidth
                     />
-                    {/* <Form.Control
-                      name="email"
-                      type="email"
-                      placeholder="Enter email"
-                    /> */}
-                    {/* <Form.Text className="text-muted">
-                      We'll never share your email with anyone else.
-                    </Form.Text> */}
                   </Form.Group>
 
                   <Form.Group controlId="formBasicPassword">
-                    {/* <Form.Label>
-                      <strong>Password</strong>
-                    </Form.Label> */}
                     <Field
                       component={TextFieldFMUI}
                       id="password"
@@ -166,15 +103,7 @@ function Login(props) {
                       helperText="Enter password"
                       fullWidth
                     />
-                    {/* <Form.Control
-                      type="password"
-                      validate={validatePassword}
-                      placeholder="Password"
-                    /> */}
                   </Form.Group>
-                  {/* <Form.Group controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
-              </Form.Group> */}
 
                   <ButtonMUI
                     variant="contained"
@@ -195,10 +124,6 @@ function Login(props) {
                   >
                     Reset
                   </ButtonMUI>
-
-                  {/* <Button variant="primary" type="submit">
-                    login
-                  </Button> */}
                 </div>
               </div>
             </div>

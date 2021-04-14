@@ -4,7 +4,6 @@
   justify-content: flex-start;
   align-items: center;
   text-align: center;
-  /* height: 100vh; */
   height: 100vh;
   border: 3px;
   box-sizing: border-box;
@@ -31,13 +30,8 @@ body {
   background-size: cover;
   display: grid;
   font-family: "Inconsolata", monospace;
-  /* min-height: 90vh; */
-  /* height: 100vh; */
   border: 3px;
   box-sizing: border-box;
-  /* place-items: center; */
-  overflow-x: hidden;
-  overflow-y: hidden;
 }
 .holder {
   padding-top: 10vh;

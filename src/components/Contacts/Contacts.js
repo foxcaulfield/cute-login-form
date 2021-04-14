@@ -4,8 +4,6 @@ import styles from "./Contacts.module.css";
 import "./Contacts.module.css";
 
 import {
-  // Tabs,
-  // Tab,
   Navbar,
   Nav,
   Form,
@@ -18,20 +16,16 @@ import {
   Accordion,
   Card,
   useAccordionToggle,
-  // Collapse,
 } from "react-bootstrap";
 
 import { Formik, Field, Form as FormikForm } from "formik";
 
-import { makeStyles } from "@material-ui/core/styles";
-// import TextFieldMUI from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import TabsMUI from "@material-ui/core/Tabs";
 import TabMUI from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import ButtonMUI from "@material-ui/core/Button";
-// import Grow from "@material-ui/core/Grow";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -42,7 +36,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { TextField as TextFieldFMUI } from "formik-material-ui";
-import { FlashAutoTwoTone } from "@material-ui/icons";
 
 //for alert when contact successfully edited
 function Alert(props) {
@@ -76,45 +69,6 @@ function a11yProps(index) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
-
-//tab panel for contact info
-// function TabPanelContactInfo(props) {
-//   const { children, value, index, ...other } = props;
-
-//   return (
-//     <div
-//       role="tabpanel"
-//       hidden={value !== index}
-//       id={`vertical-tabpanel-${index}`}
-//       aria-labelledby={`vertical-tab-${index}`}
-//       {...other}
-//     >
-//       {value === index && <Box p={0.5}>{children}</Box>}
-//     </div>
-//   );
-// }
-
-// function a22yProps(index) {
-//   return {
-//     id: `vertical-tab-${index}`,
-//     "aria-controls": `vertical-tabpanel-${index}`,
-//   };
-// }
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     flexGrow: 1,
-//     backgroundColor: theme.palette.background.paper,
-//     display: "flex",
-//     // height: 224,
-//   },
-//   contactTabs: {
-//     borderRight: `1px solid ${theme.palette.divider}`,
-//   },
-//   // indicator: {
-//   //   // left: "0px",
-//   // },
-// }));
 
 //custom toggle for accordion custom toggle
 function CustomToggle({
@@ -161,22 +115,13 @@ function Contacts(props) {
   ] = React.useState(false);
 
   const handleClickOpenDeletingContactConfirmationAlertDialog = (contactId) => {
-    // let handleContactId = contactId;
-    // alert(contactId);
-    // console.log("props here");
-    // console.log(users);
     setIdToDelete(contactId);
-
     setOpenDeletingContactConfirmationAlertDialog(true);
-    //ASYNCH BEHAVIOR HERE
   };
 
   const handleCloseDeletingContactConfirmationAlertDialog = () => {
     setOpenDeletingContactConfirmationAlertDialog(false);
   };
-
-  // hook for contact is editing
-  // const [isEditingContact, setIsEditingContact] = React.useState(false);
 
   //hook for alert when contact successfully edited
   const [openAlertContactEdited, setOpenAlertContactEdited] = React.useState(
@@ -215,9 +160,6 @@ function Contacts(props) {
         return { ...el, isEditing: false };
       });
       setUsers({ contacts: newData });
-      // setUsers({ contacts: data });
-      // console.log(data);
-      // console.log(newData);
     };
     fetchData();
   }, []);
@@ -261,7 +203,6 @@ function Contacts(props) {
   //   //   lastName: 'Williams'
   //   // });
   // }
-  //users POST
 
   //validation
   function validateName(value) {
@@ -313,10 +254,8 @@ function Contacts(props) {
   };
 
   React.useEffect(() => {
-    const results = users.contacts.filter(
-      (person) => person.name.toLowerCase().includes(searchTerm.toLowerCase())
-      // console.log(person.name)
-      // console.log(person.phone)
+    const results = users.contacts.filter((person) =>
+      person.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     console.log(results);
     setSearchResults(results);
@@ -324,15 +263,7 @@ function Contacts(props) {
 
   return (
     <div className={styles.contactsContainer}>
-      {/* BUTTON EXPERIMENT */}
-
-      {/* <Button
-                                      variant="outlined"
-                                      color="primary"
-                                      onClick={handleClickOpenDeletingContactConfirmationAlertDialog}
-                                      >
-                                      Open alert dialog
-                                      </Button> */}
+      {/* MODAL DIALOG FOR DELETING CONTACT */}
       <Dialog
         open={openDeletingContactConfirmationAlertDialog}
         onClose={handleCloseDeletingContactConfirmationAlertDialog}
@@ -350,7 +281,7 @@ function Contacts(props) {
             onClick={() => {
               //clean idToDelete
               setIdToDelete(null);
-
+              //close dialog
               handleCloseDeletingContactConfirmationAlertDialog();
             }}
             color="primary"
@@ -366,11 +297,8 @@ function Contacts(props) {
               });
               //clean idToDelete
               setIdToDelete(null);
-
+              //close dialog
               handleCloseDeletingContactConfirmationAlertDialog();
-              // setUsers({
-              //   contacts: users.contacts.filter((el) => el.id !== item.id),
-              // });
             }}
             color="secondary"
             autoFocus
@@ -379,7 +307,8 @@ function Contacts(props) {
           </ButtonMUI>
         </DialogActions>
       </Dialog>
-      {/* BUTTON EXPERIMENT */}
+      {/* MODAL DIALOG FOR DELETING CONTACT */}
+
       {/* ALERT MESSAGE FOR CONTACT EDITED */}
       <Snackbar
         open={openAlertContactEdited}
@@ -518,10 +447,6 @@ function Contacts(props) {
                         <TabMUI label="Info" {...a11yProps(0)} selected />
                         <TabMUI label="Address" {...a11yProps(1)} />
                         <TabMUI label="Company" {...a11yProps(2)} />
-                        {/* <TabMUI fullwidth label="Info"/>
-
-                        <TabMUI fullwidth label="Address" />
-                        <TabMUI fullwidth label="Company" /> */}
                       </TabsMUI>
 
                       {/* ADD CONTACT  FIRST TAB (INFO)*/}
@@ -540,7 +465,7 @@ function Contacts(props) {
                               fullWidth
                             />
                           </Grid>
-                          {/* {errors.name && touched.name && <div>{errors.name}</div>} */}
+
                           <Grid item xs={12} sm={12} md={4} lg={4}>
                             <Field
                               component={TextFieldFMUI}
@@ -705,9 +630,6 @@ function Contacts(props) {
           {/* CONTACT CARD */}
           {/* {users.contacts &&
             users.contacts.map((item) => { */}
-          {/* EXPEREMENT */}
-          {/* EXPEREMENT */}
-          {/* {users.contacts || searchResults && */}
           {users.contacts &&
             searchResults.map((item) => {
               return (
@@ -737,7 +659,6 @@ function Contacts(props) {
                           <CustomToggle
                             eventKey="1"
                             onClickSideBehaviour={() => {
-                              // alert(item.id);
                               setUsers({
                                 contacts: users.contacts.map((el) => {
                                   if (el.id === item.id) {
@@ -784,22 +705,11 @@ function Contacts(props) {
                                 },
                               }}
                               onSubmit={(values, actions) => {
-                                // props.handleSubmit();
-                                // console.log(actions);
                                 actions.setSubmitting(true);
-                                // actions.setSubmitting(true);
+
                                 // alert(JSON.stringify(values, null, 2));
 
                                 //figure out which card to edit
-                                // setUsers({
-                                //   contacts: users.contacts.map((el) => {
-                                //     if (el.id === item.id) {
-                                //       return (el = values);
-                                //     }
-                                //     return el;
-                                //   }),
-                                // });
-
                                 setUsers({
                                   contacts: users.contacts.map((el) => {
                                     if (el.id === item.id) {
@@ -814,47 +724,11 @@ function Contacts(props) {
                                     return el;
                                   }),
                                 });
-                                // setUsers({
-                                //   contacts: users.contacts.map((el) => {
-                                //     if (el.id === item.id) {
-                                //       el = values;
 
-                                //       // setTimeout(
-                                //         (el.isEditing = !el.isEditing),
-                                //         // 1000
-                                //       // );
-
-                                //       if (el.isEditing === true) {
-                                //         // setTimeout(
-                                //           (el.isEditing = false),
-                                //           // 1000
-                                //         // );
-                                //       }
-                                //     }
-                                //     //reset form for proper validation
-                                //     // setTimeout(
-                                //       actions.resetForm({ values: el }),
-                                //       // 1000
-                                //     // );
-                                //     // return el;
-                                //     return el;
-                                //   }),
-                                // });
-                                // }, 1000);
-                                // setUsers({
-                                //   contacts: users.contacts.map((el) => {
-                                //     if (el.id === item.id) {
-                                //       el.isEditing = false;
-                                //     }
-                                //     return el;
-                                //   }),
-                                // });
                                 setTimeout(() => {
                                   actions.setSubmitting(false);
                                   handleOpenAlertContactEdited();
                                 }, 1000);
-                                // setIsEditingContact(false);
-                                // isOpen = false;
                               }}
                             >
                               {(props) => (
@@ -1137,7 +1011,6 @@ function Contacts(props) {
 
                                   <Grid container spacing={3}>
                                     <Grid item xs={12} sm={12} md={9} lg={9}>
-                                      {/* <button type="submit">ok</button> */}
                                       {props.dirty && (
                                         <CustomToggle
                                           isFullWidth={true}
@@ -1157,11 +1030,7 @@ function Contacts(props) {
                                         variant="contained"
                                         color="secondary"
                                         onClick={() => {
-                                          // setUsers({
-                                          //   contacts: users.contacts.filter(
-                                          //     (el) => el.id !== item.id
-                                          //   ),
-                                          // });
+                                          //sending item id for deleting
                                           handleClickOpenDeletingContactConfirmationAlertDialog(
                                             item.id
                                           );

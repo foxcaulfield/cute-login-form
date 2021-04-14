@@ -1,15 +1,7 @@
 html,
 body {
-  /* height: 100%; */
-  /* width: 100%; */
-  /* height: 90vh; */
-  /* border: 3px; */
-  /* box-sizing: border-box; */
   padding: 0 !important;
   margin: 0;
-  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: auto;
@@ -18,10 +10,6 @@ body {
   overflow-y: scroll;
 }
 
-/* code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-} */
 #root {
   /* height: 100vh; */
   /* height: 90vh; */
