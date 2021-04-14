@@ -36,6 +36,8 @@ body {
   border: 3px;
   box-sizing: border-box;
   /* place-items: center; */
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 .holder {
   padding-top: 10vh;

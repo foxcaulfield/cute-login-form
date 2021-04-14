@@ -100,7 +100,6 @@ function Login(props) {
           // props.history.push();
           // props.handleSubmit("/contacts");
           onSubmitFromLogin();
-          // alert("Я РОДИЛСЯ!");
           // console.log(data.values);
           // console.log(!!data.values);
           // let subData = data;

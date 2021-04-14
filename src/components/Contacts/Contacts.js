@@ -302,6 +302,26 @@ function Contacts(props) {
     window.dispatchEvent(new CustomEvent("resize"));
   }, [openAddContact]);
 
+  //search
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const [searchResults, setSearchResults] = React.useState([]);
+
+  const handleChangeSearchTerm = (event) => {
+    console.log(event.target.value);
+    setSearchTerm(event.target.value);
+  };
+
+  React.useEffect(() => {
+    const results = users.contacts.filter(
+      (person) => person.name.toLowerCase().includes(searchTerm.toLowerCase())
+      // console.log(person.name)
+      // console.log(person.phone)
+    );
+    console.log(results);
+    setSearchResults(results);
+  }, [searchTerm, users.contacts]);
+
   return (
     <div className={styles.contactsContainer}>
       {/* BUTTON EXPERIMENT */}
@@ -335,7 +355,7 @@ function Contacts(props) {
             }}
             color="primary"
           >
-            Disagree
+            Cancel
           </ButtonMUI>
 
           <ButtonMUI
@@ -355,7 +375,7 @@ function Contacts(props) {
             color="secondary"
             autoFocus
           >
-            Agree
+            Delete
           </ButtonMUI>
         </DialogActions>
       </Dialog>
@@ -395,6 +415,7 @@ function Contacts(props) {
                 type="text"
                 placeholder="Search"
                 className="mr-sm-2"
+                onChange={handleChangeSearchTerm}
               />
               <Button variant="outline-info">Search</Button>
             </Form>
@@ -682,8 +703,13 @@ function Contacts(props) {
         {/* DEFINE CLASSNAME TO REVERSE CARDS DISPLAY IN CSS*/}
         <div className={styles.contactCards}>
           {/* CONTACT CARD */}
+          {/* {users.contacts &&
+            users.contacts.map((item) => { */}
+          {/* EXPEREMENT */}
+          {/* EXPEREMENT */}
+          {/* {users.contacts || searchResults && */}
           {users.contacts &&
-            users.contacts.map((item) => {
+            searchResults.map((item) => {
               return (
                 <>
                   <div key={item.id} className={styles.contactCard}>

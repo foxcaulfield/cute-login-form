@@ -1,7 +1,19 @@
 .contactsContainer {
-  background: #525252;
+  background: #393e46;
+  /* background-attachment: fixed; */
+  /* background-image: url(http://omset.files.wordpress.com/2010/06/homer-simpson-1-264a0.jpg); */
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: center top;
+  background-attachment: fixed;
+  min-height: 100vh;
+  height: 100%;
   /* display: flex; */
   /* flex-direction: column-reverse; */
+  /* padding-left: calc(100vw - 100%); */
+  /* overflow-x: hidden; */
+  /* margin-right: calc(-1 * (100vw - 100%)); */
+  /* overflow: scroll; */
 }
 
 .addContactFormCol {
