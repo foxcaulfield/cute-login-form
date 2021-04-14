@@ -6,7 +6,7 @@ import { BrowserRouter, Redirect, Route } from "react-router-dom";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <div className="App">
         <Route exact path="/">
           <Redirect to="/login" />
