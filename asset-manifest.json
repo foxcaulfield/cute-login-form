@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/cute-login-form-and-contacts/static/css/main.ad1c2143.chunk.css",
+    "main.css": "/cute-login-form-and-contacts/static/css/main.9e4dc9ec.chunk.css",
     "main.js": "/cute-login-form-and-contacts/static/js/main.f1102f15.chunk.js",
     "main.js.map": "/cute-login-form-and-contacts/static/js/main.f1102f15.chunk.js.map",
     "runtime-main.js": "/cute-login-form-and-contacts/static/js/runtime-main.cf608418.js",
@@ -12,14 +12,14 @@
     "static/js/3.018ca087.chunk.js.map": "/cute-login-form-and-contacts/static/js/3.018ca087.chunk.js.map",
     "index.html": "/cute-login-form-and-contacts/index.html",
     "static/css/2.150d169a.chunk.css.map": "/cute-login-form-and-contacts/static/css/2.150d169a.chunk.css.map",
-    "static/css/main.ad1c2143.chunk.css.map": "/cute-login-form-and-contacts/static/css/main.ad1c2143.chunk.css.map",
+    "static/css/main.9e4dc9ec.chunk.css.map": "/cute-login-form-and-contacts/static/css/main.9e4dc9ec.chunk.css.map",
     "static/js/2.824b6343.chunk.js.LICENSE.txt": "/cute-login-form-and-contacts/static/js/2.824b6343.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.cf608418.js",
     "static/css/2.150d169a.chunk.css",
     "static/js/2.824b6343.chunk.js",
-    "static/css/main.ad1c2143.chunk.css",
+    "static/css/main.9e4dc9ec.chunk.css",
     "static/js/main.f1102f15.chunk.js"
   ]
 }
