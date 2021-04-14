@@ -1,6 +1,8 @@
 # Cute login form and contact list
 
+<p align="center">
 <img src="https://img.shields.io/github/languages/top/foxcaulfield/cute-login-form-and-contacts.svg">
+</p>
 
 ## :pushpin: About
 
