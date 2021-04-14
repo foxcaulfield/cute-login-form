@@ -4,10 +4,13 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* overflow: auto; */
+  overflow: auto;
   padding-right: 0;
   /* overflow-x: hidden; */
   /* overflow-y: scroll; */
+  /* overflow-y: hidden; */
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 #root {
