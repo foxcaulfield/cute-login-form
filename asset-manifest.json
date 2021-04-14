@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/cute-login-form-and-contacts/static/css/main.1bd16084.chunk.css",
-    "main.js": "/cute-login-form-and-contacts/static/js/main.d1c47180.chunk.js",
-    "main.js.map": "/cute-login-form-and-contacts/static/js/main.d1c47180.chunk.js.map",
-    "runtime-main.js": "/cute-login-form-and-contacts/static/js/runtime-main.464ccbca.js",
-    "runtime-main.js.map": "/cute-login-form-and-contacts/static/js/runtime-main.464ccbca.js.map",
+    "main.css": "/cute-login-form-and-contacts/static/css/main.ad1c2143.chunk.css",
+    "main.js": "/cute-login-form-and-contacts/static/js/main.f1102f15.chunk.js",
+    "main.js.map": "/cute-login-form-and-contacts/static/js/main.f1102f15.chunk.js.map",
+    "runtime-main.js": "/cute-login-form-and-contacts/static/js/runtime-main.cf608418.js",
+    "runtime-main.js.map": "/cute-login-form-and-contacts/static/js/runtime-main.cf608418.js.map",
     "static/css/2.150d169a.chunk.css": "/cute-login-form-and-contacts/static/css/2.150d169a.chunk.css",
-    "static/js/2.ecbb720e.chunk.js": "/cute-login-form-and-contacts/static/js/2.ecbb720e.chunk.js",
-    "static/js/2.ecbb720e.chunk.js.map": "/cute-login-form-and-contacts/static/js/2.ecbb720e.chunk.js.map",
-    "static/js/3.24f8d354.chunk.js": "/cute-login-form-and-contacts/static/js/3.24f8d354.chunk.js",
-    "static/js/3.24f8d354.chunk.js.map": "/cute-login-form-and-contacts/static/js/3.24f8d354.chunk.js.map",
+    "static/js/2.824b6343.chunk.js": "/cute-login-form-and-contacts/static/js/2.824b6343.chunk.js",
+    "static/js/2.824b6343.chunk.js.map": "/cute-login-form-and-contacts/static/js/2.824b6343.chunk.js.map",
+    "static/js/3.018ca087.chunk.js": "/cute-login-form-and-contacts/static/js/3.018ca087.chunk.js",
+    "static/js/3.018ca087.chunk.js.map": "/cute-login-form-and-contacts/static/js/3.018ca087.chunk.js.map",
     "index.html": "/cute-login-form-and-contacts/index.html",
     "static/css/2.150d169a.chunk.css.map": "/cute-login-form-and-contacts/static/css/2.150d169a.chunk.css.map",
-    "static/css/main.1bd16084.chunk.css.map": "/cute-login-form-and-contacts/static/css/main.1bd16084.chunk.css.map",
-    "static/js/2.ecbb720e.chunk.js.LICENSE.txt": "/cute-login-form-and-contacts/static/js/2.ecbb720e.chunk.js.LICENSE.txt"
+    "static/css/main.ad1c2143.chunk.css.map": "/cute-login-form-and-contacts/static/css/main.ad1c2143.chunk.css.map",
+    "static/js/2.824b6343.chunk.js.LICENSE.txt": "/cute-login-form-and-contacts/static/js/2.824b6343.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.464ccbca.js",
+    "static/js/runtime-main.cf608418.js",
     "static/css/2.150d169a.chunk.css",
-    "static/js/2.ecbb720e.chunk.js",
-    "static/css/main.1bd16084.chunk.css",
-    "static/js/main.d1c47180.chunk.js"
+    "static/js/2.824b6343.chunk.js",
+    "static/css/main.ad1c2143.chunk.css",
+    "static/js/main.f1102f15.chunk.js"
   ]
 }
