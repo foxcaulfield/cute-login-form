@@ -34,6 +34,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 import { TextField as TextFieldFMUI } from "formik-material-ui";
 import { useHistory } from "react-router";
@@ -343,20 +344,31 @@ function Contacts(props) {
                   setOpenAddContact(!openAddContact);
                 }}
               >
-                {openAddContact ? "Cancel" : "Add contact"}
+                {openAddContact ? "Cancel" : "Add"}
               </CustomToggle>
             </Nav>
-
             <Form inline>
-              <FormControl
-                type="text"
-                placeholder="Search"
-                className="mr-sm-2"
-                onChange={handleChangeSearchTerm}
-              />
-              <Button variant="outline-info" onClick={onClickLogout}>
-                Log out
-              </Button>
+              <Grid container spacing={1}>
+                <Grid item xs={9} sm={9} md={8} lg={8}>
+                  <FormControl
+                    type="text"
+                    placeholder="Search"
+                    className={styles.searchBar}
+                    // className="mr-sm-2"
+                    onChange={handleChangeSearchTerm}
+                  />
+                </Grid>
+                <Grid item xs={3} sm={3} md={4} lg={4}>
+                  <ButtonMUI
+                    // variant="contained"
+                    color="secondary"
+                    onClick={onClickLogout}
+                  >
+                    {/* Log out */}
+                    <ExitToAppIcon />
+                  </ButtonMUI>
+                </Grid>
+              </Grid>
             </Form>
           </Navbar>
           {/* END NAVBAR */}

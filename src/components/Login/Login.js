@@ -45,7 +45,7 @@ function Login(props) {
   }
 
   return (
-    <>
+    <div className={styles.inputsWrapper}>
       <Formik
         initialValues={{
           email: "",
@@ -131,7 +131,7 @@ function Login(props) {
         )}
         {/* END FORMIK FORM */}
       </Formik>
-    </>
+    </div>
   );
 }
 

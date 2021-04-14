@@ -23,6 +23,12 @@
   border-radius: 0.3em;
 }
 
+.searchBar {
+  width: 80% !important;
+  /* left: 20%; */
+  margin-left: 2em;
+}
+
 .contactCards {
   display: flex;
   flex-direction: column-reverse;
