@@ -36,6 +36,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { TextField as TextFieldFMUI } from "formik-material-ui";
+import { useHistory } from "react-router";
 
 //for alert when contact successfully edited
 function Alert(props) {
@@ -105,6 +106,13 @@ function onKeyDown(keyEvent) {
 }
 
 function Contacts(props) {
+  //for page routing
+  let history = useHistory();
+  function onClickLogout() {
+    history.push("/login");
+    console.log(history);
+  }
+
   //experemental behaviour for deleting users wit modal dialog
   const [idToDelete, setIdToDelete] = useState(null);
 
@@ -346,7 +354,9 @@ function Contacts(props) {
                 className="mr-sm-2"
                 onChange={handleChangeSearchTerm}
               />
-              <Button variant="outline-info">Search</Button>
+              <Button variant="outline-info" onClick={onClickLogout}>
+                Log out
+              </Button>
             </Form>
           </Navbar>
           {/* END NAVBAR */}
