@@ -28,7 +28,10 @@ Built with:
 
 - Enter random valid email and password to login
 - Add contact by tapping "Add" button in the navbar and enter values to form
-- You can also add contact information when first creating a contact or by opening an existing contact and tapping "Profile"
-- Edit the contact information as desired, when you're finished, tap "Save"
+- You can also add contact information when first creating a contact or by
+  opening an existing contact and tapping "Profile"
+- Edit the contact information as desired, after you finished, tap "Save"
 - Tap "Delete" then confirm your action to delete contact
-- You can quickly search all of your contacts by using the Search bar at the top of the contacts list, just tap the Search bar and type - any contacts matching your search will appear
+- You can quickly search all of your contacts by using the Search bar at the top
+  of the contacts list, just tap the Search bar and type - any contacts matching
+  your search will appear
