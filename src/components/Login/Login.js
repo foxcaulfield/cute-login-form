@@ -52,21 +52,29 @@ function Login(props) {
           password: "",
         }}
         //POST to server
-        onSubmit={async (values, { resetForm }) => {
-          console.log(values);
-          const { data } = await axios.post(
-            "https://jsonplaceholder.typicode.com/users",
-            {
-              values,
-            }
-          );
+        onSubmit={
+          //for asynch
 
-          //routing after POST
-          onSubmitFromLogin();
+          async (values, { resetForm }) => {
+            console.log(values);
+            const { data } = await axios.post(
+              "https://jsonplaceholder.cypress.io/users", //alt way
+              // "https://jsonplaceholder.typicode.com/users",
+              {
+                values,
+              }
+            );
 
-          //reset form
-          resetForm();
-        }}
+            //for demo
+            // ({ resetForm }) => {
+
+            //routing after POST
+            onSubmitFromLogin();
+
+            //reset form
+            resetForm();
+          }
+        }
       >
         {/* FORMIK FORM */}
         {({ errors, touched, isValidating }) => (

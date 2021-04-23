@@ -162,7 +162,8 @@ function Contacts(props) {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        "https://jsonplaceholder.typicode.com/users"
+        "https://jsonplaceholder.cypress.io/users" // alt way
+        // "https://jsonplaceholder.typicode.com/users"
       );
       //add isEditing value
       const newData = data.map((el) => {
@@ -405,7 +406,8 @@ function Contacts(props) {
                   onSubmit={async (values, { resetForm }) => {
                     console.log(values);
                     const { data } = await axios.post(
-                      "https://jsonplaceholder.typicode.com/users",
+                      "https://jsonplaceholder.cypress.io/users", //alt way
+                      // "https://jsonplaceholder.typicode.com/users",
                       {
                         values,
                       }
